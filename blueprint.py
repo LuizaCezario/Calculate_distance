@@ -7,6 +7,7 @@ calculate_route = Blueprint('calculate_route', __name__, static_folder='static',
 
 @calculate_route.route('/', methods=['POST', 'GET'])
 def api():
+    # Method to render the html page
     if request.method == 'GET':
         return render_template("index.html")
     else:
@@ -16,6 +17,7 @@ def api():
 
 
 def calculate_distance(p2):
+    #Method to test if the coordinates are in the mkad and to calculate the distance between Moscow Ring Road and the given point
     if (validate_coordinates(p2) == True):
         p2 = re.sub(r"\s+", "", p2)
         if p2 in ('37.842762,55.774558',
@@ -81,16 +83,15 @@ def calculate_distance(p2):
         else:
             p1 = (55.751244, 37.618423) 
             distance = geopy.distance.distance(p1, p2).km 
-            print(distance)
             return distance
     else:
         return "Latitude must be in the [-90; 90] range and Longitude must be in the [-180; 180] range."
 
 def validate_coordinates(p2):
+    #Method to verify if the coordinates are in the boundary
     p2 = p2.split(sep = ",")
     p2[0] = float(p2[0])
     p2[1] = float(p2[1])
-    print(p2)
     if (-90<=p2[0] and p2[0]<=90 and -180<=p2[1] and p2[1]<=180):
         return True
     else:
